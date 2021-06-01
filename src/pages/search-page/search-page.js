@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Search from '../../components/search/search';
 import { useStateValue } from '../../context/StateProvider';
-// import useGoogleSearch from '../../custom-search-api/use-google-search';
+import useGoogleSearch from '../../custom-search-api/use-google-search';
 import Response from '../../custom-search-api/response';
 
 import './search-page.css';
@@ -16,13 +16,13 @@ import RoomIcon from '@material-ui/icons/Room';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const SearchPage = () => {
-  const [{ term='tesla' }, dispatch] = useStateValue();
+  const [{ term }, dispatch] = useStateValue();
 
   // live api call
-  // const { data } = useGoogleSearch(term);
+  const { data } = useGoogleSearch(term);
 
   // Mock api call
-  const data = Response; // we're using this cause custom search api has a limit of 100 request on free. so we just save the reponse of one result then working with it 
+  // const data = Response; // we're using this cause custom search api has a limit of 100 request on free. so we just save the reponse of one result then working with it 
   // through the development period
 
 
@@ -84,7 +84,7 @@ const SearchPage = () => {
             About {data?.searchInformation.formattedTotalResults} results ({data?.searchInformation.formattedSearchTime} seconds) for {term}
           </p>
 
-          {data.items.map(item => (
+          {data?.items.map(item => (
             <div className="searchPage__result">
               <a className="searchPage__resultLink" href={item.link}>
                 {item.pagemap?.cse_image?.length > 0 && item.pagemap?.cse_image[0].src && (
